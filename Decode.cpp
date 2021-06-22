@@ -15,19 +15,20 @@ int main(){
     PrintList(t);
 
     list<Range>::iterator it;
-    int l0 = 0, h0 = 65535, delitel = t.back().R;
-	int First_qtr = (h0 + 1) / 4;						//16384
-	int Half = First_qtr * 2;							//32768
-	int Thride_qtr = First_qtr * 3;						//49152
-	short value=(fin.get()<<8)|fin.get();
+    int l0=0, h0=65535, i=0, delitel=t.back().R;
+    int First_qtr = (h0 + 1) / 4;   //16384
+	int Half = First_qtr * 2;   //32768
+	int Thride_qtr = First_qtr * 3; //49152
+	int value=(fin.get()<<8)|fin.get();
 	char tmp=fin.get();
 	int count = 0;
-    while (!fin.eof())
+	//cout<<endl<<delitel<<endl;
+    while (len)
 	{
-		int freq = ((value - l0 + 1) * delitel - 1) / (h0 - l0 + 1);
+		long long freq =((value - l0 + 1) * delitel - 1) /(h0-l0);
 		for (it = t.begin(); it->R <= freq; it++);
-		int d=h0-l0+1;
-        h0 = l0 + it->R * d/delitel-1;
+		int d=h0-l0;
+        h0 = l0 + it->R * d/delitel;
 		l0 = l0 + it->L * d/delitel;
 		for (;;)
 		{								
@@ -49,18 +50,20 @@ int main(){
 			h0<<=1;
 			h0++;
 			value<<=1;
-			value|=((tmp&(1<<(7-count)))>>(7-count));
+			value+=((tmp&(1<<(7-count)))>>(7-count));
 			count++;
+			//cout<<it->c<<" : "<<l0<<" - "<<h0<<endl;
 			if (count == 8)
 			{
 				tmp = fin.get();
 				count = 0;
 			}
 		}
-		cout<<it->c;
-		fout.put(it->c);
+		fout<<it->c;
+		len--;
 	}
 
     fin.close();
     fout.close();
 }
+
