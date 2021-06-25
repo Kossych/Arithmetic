@@ -6,9 +6,9 @@
 #include <iterator>
 #include <fstream>
 
+
 using namespace std;
 
-const int N=4;
 
 class Range{
     public:
@@ -76,3 +76,8 @@ void BitsPlusFollow(ofstream &fout, bool bit, int bits_to_follow, int *count){
         fout.write((char*)&bit, 1);
     }
 }
+
+const unsigned short l=0, h=-1; 
+const unsigned short First_qtr = (h + 1) / 4;
+const unsigned short Half = First_qtr * 2;
+const unsigned short Thride_qtr = First_qtr * 3;
