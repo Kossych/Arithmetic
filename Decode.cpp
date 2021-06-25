@@ -1,5 +1,6 @@
 #include "AC.h"
 
+unsigned short l0=l, h0=h;
 
 int main(){
     ifstream fin("Encode.txt", ios::binary);
@@ -13,22 +14,20 @@ int main(){
 
     list<Range> t=CreateList(m);
     PrintList(t);
-
     list<Range>::iterator it;
-    int l0=0, h0=65535, i=0, delitel=t.back().R;
-    int First_qtr = (h0 + 1) / 4;   //16384
-	int Half = First_qtr * 2;   //32768
-	int Thride_qtr = First_qtr * 3; //49152
-	int value=(fin.get()<<8)|fin.get();
+
+	int delitel=t.back().R;
+	unsigned short value=(fin.get()<<8)|fin.get();	
 	char tmp=fin.get();
 	int count = 0;
-	//cout<<endl<<delitel<<endl;
+	int q=0;
     while (len)
 	{
-		long long freq =((value - l0 + 1) * delitel - 1) /(h0-l0);
+		int d=h0-l0+1;
+		unsigned int freq =(((((unsigned long long)value - l0 + 1) * delitel)) - 1)/(d);
 		for (it = t.begin(); it->R <= freq; it++);
-		int d=h0-l0;
-        h0 = l0 + it->R * d/delitel;
+		
+        h0 = l0 + it->R * d/delitel-1;
 		l0 = l0 + it->L * d/delitel;
 		for (;;)
 		{								
@@ -66,4 +65,5 @@ int main(){
     fin.close();
     fout.close();
 }
+
 
